@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECOGINI — Cek Dulu, Percaya Kemudian</title>
+<style>
+:root{--green:#176b4d;--lime:#c8f169;--cream:#f6f8ef;--ink:#172c24;--muted:#65756d;--white:#fff;--line:#dfe8df}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+nav{display:flex;justify-content:space-between;align-items:center;padding:18px 7%;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:900;color:var(--green);letter-spacing:-1px}
+.logo span{color:#a0c83f}
+nav button,.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer}
+nav button{background:var(--green);color:#fff}
+.hero{padding:75px 7% 65px;background:var(--green);color:white;position:relative;overflow:hidden}
+.hero:after{content:"🌿";position:absolute;right:9%;top:35px;font-size:100px;opacity:.18}
+.pill{display:inline-block;background:#ffffff20;border:1px solid #ffffff50;border-radius:30px;padding:6px 13px;font-size:13px}
+h1{font-size:clamp(38px,6vw,66px);line-height:1.08;max-width:760px;letter-spacing:-2px;margin:22px 0}
+.hero p{max-width:620px;color:#e0f0e6;font-size:17px}
+.btn{background:var(--lime);color:var(--ink);margin-top:14px}
+.btn.secondary{background:#fff;color:var(--green);border:1px solid var(--line)}
+main{max-width:1100px;margin:auto;padding:40px 22px}
+.section-title{font-size:30px;letter-spacing:-1px;margin:0 0 8px}
+.intro{color:var(--muted);margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:25px 0 45px}
+.card{background:#fff;padding:23px;border:1px solid var(--line);border-radius:20px;box-shadow:0 5px 18px #183e2310}
+.card .emoji{font-size:30px}
+.card h3{margin:10px 0 5px}
+.card p{color:var(--muted);font-size:14px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(20px,4vw,35px);margin:20px 0 45px}
+label{display:block;font-weight:700;margin:18px 0 7px}
+textarea,select,input{width:100%;padding:13px;border:1px solid #cbd9cd;border-radius:11px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:110px;resize:vertical}
+button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #a0c83f;outline-offset:3px}
+.result{padding:15px;border-radius:12px;margin-top:15px;display:none}
+.result.show{display:block}
+.notice{background:#fff5d9;border:1px solid #eedb9a;color:#694f12}
+.good{background:#e1f5e8;border:1px solid #a5d9b6;color:#185b37}
+.quiz-question{padding:18px 0;border-bottom:1px solid var(--line)}
+.quiz-question p{font-weight:700}
+.option{display:block;padding:10px;margin:7px 0;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.option:has(input:checked){border-color:var(--green);background:#edf7ed}
+.option input{width:auto;margin-right:8px}
+.steps{counter-reset:step}
+.step{padding:14px 0 14px 48px;position:relative;border-bottom:1px solid var(--line)}
+.step:before{counter-increment:step;content:counter(step);position:absolute;left:0;top:14px;background:var(--green);color:white;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;font-weight:bold}
+footer{background:#102e23;color:#e2efe6;padding:30px 7%;font-size:13px}
+footer p{max-width:850px}
+.small{font-size:12px;color:var(--muted)}
+.stat{font-size:34px;font-weight:900;color:var(--green)}
+@media(max-width:750px){.grid{grid-template-columns:1fr}.hero{padding-top:50px}nav{padding:14px 5%}nav .nav-label{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">ECO<span>GINI</span> 🌱</div>
+  <button onclick="document.getElementById('cek').scrollIntoView()">Mulai cek klaim ↗</button>
+</nav>
+
+<header class="hero">
+  <span class="pill">🌱 Literasi AI untuk generasi kritis</span>
+  <h1>AI bisa menjawab.<br>Kamu harus <span style="color:#c8f169">memeriksa.</span></h1>
+  <p>Jawaban AI tidak selalu benar. ECOGINI membantumu belajar memeriksa klaim, mencari bukti, dan berpikir kritis sebelum mempercayai informasi.</p>
+  <button class="btn" onclick="document.getElementById('cek').scrollIntoView()">Mulai eksplorasi →</button>
+</header>
+
+<main>
+<section>
+  <h2 class="section-title">Kenalan dengan ECOGINI</h2>
+  <p class="intro">Bukan alat yang menjamin semua jawaban AI benar atau salah, melainkan ruang belajar untuk membangun kebiasaan verifikasi.</p>
+  <div class="grid">
+    <article class="card"><div class="emoji">🔎</div><h3>Cek Klaim</h3><p>Identifikasi klaim yang perlu diperiksa dan tentukan langkah verifikasinya.</p></article>
+    <article class="card"><div class="emoji">🧠</div><h3>ECO LAB</h3><p>Uji kemampuanmu menghadapi contoh informasi yang benar, keliru, atau belum cukup bukti.</p></article>
+    <article class="card"><div class="emoji">📚</div><h3>Panduan Verifikasi</h3><p>Pelajari cara membandingkan sumber dan menghindari kesimpulan terburu-buru.</p></article>
+  </div>
+</section>
+
+<section id="cek">
+  <h2 class="section-title">🔎 Cek Klaim</h2>
+  <p class="intro">Latihan menyusun pemeriksaan awal atas klaim dari AI atau sumber lain.</p>
+  <div class="panel">
+    <label for="claim">Masukkan klaim yang ingin diperiksa</label>
+    <textarea id="claim" placeholder="Contoh: Menurut sebuah jawaban AI, 80% pelajar Indonesia menggunakan AI setiap hari..."></textarea>
+    <label for="source">Dari mana klaim ini berasal?</label>
+    <select id="source">
+      <option value="">Pilih sumber</option>
+      <option>Chatbot AI</option><option>Media sosial</option><option>Artikel atau berita</option><option>Sumber lainnya</option>
+    </select>
+    <button class="btn" onclick="checkClaim()">Buat rencana verifikasi →</button>
+    <div id="claimResult" class="result notice" aria-live="polite"></div>
+    <p class="small">Catatan: fitur ini membuat panduan pemeriksaan, bukan memeriksa kebenaran klaim secara otomatis.</p>
+  </div>
+</section>
+
+<section id="lab">
+  <h2 class="section-title">🧪 ECO LAB: Tantang logikamu</h2>
+  <p class="intro">Baca setiap situasi, lalu pilih tindakan yang paling bertanggung jawab.</p>
+  <div class="panel">
+    <form id="quizForm">
+      <div class="quiz-question">
+        <p>1. AI menyebutkan sebuah statistik, tetapi tidak mencantumkan sumber. Apa yang sebaiknya kamu lakukan?</p>
+        <label class="option"><input type="radio" name="q1" value="0"> Langsung menggunakannya karena angkanya spesifik.</label>
+        <label class="option"><input type="radio" name="q1" value="1"> Mencari sumber asli dan membandingkan dengan sumber tepercaya.</label>
+        <label class="option"><input type="radio" name="q1" value="0"> Membagikannya agar orang lain ikut memeriksa.</label>
+      </div>
+      <div class="quiz-question">
+        <p>2. Dua situs memberikan angka yang berbeda tentang topik yang sama. Apa langkah terbaik?</p>
+        <label class="option"><input type="radio" name="q2" value="0"> Memilih angka yang paling besar.</label>
+        <label class="option"><input type="radio" name="q2" value="0"> Memilih situs yang tampilannya paling bagus.</label>
+        <label class="option"><input type="radio" name="q2" value="1"> Memeriksa metode, tanggal, konteks, dan sumber data keduanya.</label>
+      </div>
+      <div class="quiz-question">
+        <p>3. AI menyertakan tautan yang terlihat meyakinkan. Apakah itu otomatis membuktikan jawabannya benar?</p>
+        <label class="option"><input type="radio" name="q3" value="0"> Ya, karena ada tautan.</label>
+        <label class="option"><input type="radio" name="q3" value="1"> Tidak. Buka tautan dan pastikan isinya benar-benar mendukung klaim.</label>
+        <label class="option"><input type="radio" name="q3" value="0"> Ya, jika jawabannya panjang.</label>
+      </div>
+      <div class="quiz-question">
+        <p>4. Kamu belum menemukan bukti yang cukup untuk memastikan sebuah klaim. Apa kesimpulan yang tepat?</p>
+        <label class="option"><input type="radio" name="q4" value="1"> Statusnya belum terverifikasi; cari bukti tambahan.</label>
+        <label class="option"><input type="radio" name="q4" value="0"> Klaim itu pasti salah.</label>
+        <label class="option"><input type="radio" name="q4" value="0"> Klaim itu pasti benar.</label>
+      </div>
+      <button type="button" class="btn" onclick="gradeQuiz()">Lihat hasilku ✨</button>
+      <button type="reset" class="btn secondary" onclick="document.getElementById('quizResult').classList.remove('show')">Ulangi kuis</button>
+    </form>
+    <div id="quizResult" class="result good" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="panduan">
+  <h2 class="section-title">📚 Metode JEDA sebelum percaya</h2>
+  <p class="intro">Langkah sederhana yang bisa diterapkan saat menerima informasi dari AI.</p>
+  <div class="panel">
+    <div class="steps"><b>J — Jangan langsung percaya</b><br>Berhenti sejenak ketika menemukan klaim yang mengejutkan atau sangat spesifik.</div>
+    <div class="steps"><b>E — Eksplorasi sumber</b><br>Telusuri sumber asli, penulis, tanggal publikasi, dan tautan rujukan.</div>
+    <div class="steps"><b>D — Dapatkan pembanding</b><br>Bandingkan dengan sumber independen yang relevan dan kredibel.</div>
+    <div class="steps"><b>A — Ambil kesimpulan hati-hati</b><br>Tandai informasi sebagai didukung bukti, terbantahkan, atau belum terverifikasi sesuai hasil pemeriksaan.</div>
+  </div>
+</section>
+
+<section id="evaluasi">
+  <h2 class="section-title">📊 Evaluasi belajarmu</h2>
+  <div class="grid">
+    <article class="card"><div class="stat" id="attempts">0</div><b>Kuis diselesaikan</b><p>Jumlah penyelesaian kuis pada sesi browser ini.</p></article>
+    <article class="card"><div class="stat" id="bestScore">—</div><b>Skor terbaik</b><p>Skor tertinggi dari kuis yang kamu selesaikan pada sesi ini.</p></article>
+    <article class="card"><div class="stat" id="checks">0</div><b>Rencana verifikasi</b><p>Jumlah rencana pemeriksaan yang dibuat pada sesi ini.</p></article>
+  </div>
+  <p class="small">Angka ini hanya indikator aktivitas pada halaman saat ini, bukan bukti peningkatan literasi atau efektivitas produk. Data tidak dikirim ke server dan dapat hilang saat halaman dimuat ulang.</p>
+</section>
+</main>
+
+<footer>
+  <div class="logo" style="color:#c8f169">ECOGINI 🌱</div>
+  <p><b>Cek dulu, percaya kemudian.</b></p>
+  <p>Prototipe edukasi literasi AI untuk mendukung kebiasaan verifikasi informasi. ECOGINI tidak menjamin deteksi semua halusinasi AI dan tidak menggantikan pemeriksaan sumber primer.</p>
+  <p>© ECOGINI — Prototipe penelitian pendidikan dan sosial-humaniora.</p>
+</footer>
+
+<script>
+let attempts=0, best=0, checks=0;
+
+function checkClaim(){
+  const claim=document.getElementById('claim').value.trim();
+  const source=document.getElementById('source').value;
+  const box=document.getElementById('claimResult');
+  if(!claim){box.className='result notice show';box.textContent='Masukkan klaim terlebih dahulu agar kamu bisa membuat rencana pemeriksaan.';return}
+  checks++;
+  document.getElementById('checks').textContent=checks;
+  box.className='result notice show';
+  box.innerHTML='<b>Rencana verifikasi klaim</b><br><br>'+
+    '<b>Klaim:</b> '+escapeHTML(claim)+'<br>'+
+    '<b>Sumber yang dipilih:</b> '+escapeHTML(source||'Belum ditentukan')+'<br><br>'+
+    '<b>Langkah berikutnya:</b><ol>'+
+    '<li>Temukan sumber asli yang mendukung klaim ini.</li>'+
+    '<li>Periksa tanggal, konteks, penulis, dan metode pengumpulan data jika ada.</li>'+
+    '<li>Bandingkan dengan setidaknya dua sumber independen yang tepercaya.</li>'+
+    '<li>Catat bukti yang mendukung maupun yang bertentangan.</li></ol>'+
+    '<b>Status saat ini: BELUM TERVERIFIKASI.</b> Ini bukan vonis benar atau salah. Periksa bukti sebelum menyimpulkan.';
+}
+
+function escapeHTML(text){
+  return text.replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+function gradeQuiz(){
+  const form=document.getElementById('quizForm');
+  let score=0, answered=0;
+  for(let i=1;i<=4;i++){
+    const chosen=form.querySelector('input[name="q'+i+'"]:checked');
+    if(chosen){answered++;score+=Number(chosen.value)}
+  }
+  const box=document.getElementById('quizResult');
+  box.className='result good show';
+  if(answered<4){
+    box.textContent='Kamu baru menjawab '+answered+' dari 4 pertanyaan. Jawab semuanya agar hasilmu dapat dihitung.';
+    return;
+  }
+  attempts++;
+  const percent=Math.round(score/4*100);
+  best=Math.max(best,percent);
+  document.getElementById('attempts').textContent=attempts;
+  document.getElementById('bestScore').textContent=best+'%';
+  box.innerHTML='<h3>Skormu: '+percent+'/100 🎉</h3>'+
+    '<p>'+ (score===4?'Hebat! Kamu memilih langkah verifikasi yang tepat pada semua situasi.':score>=2?'Awal yang bagus! Tinjau kembali jawaban yang keliru dan baca metode JEDA.':'Terus berlatih! Ingat, informasi yang terdengar meyakinkan belum tentu didukung bukti.')+'</p>'+
+    '<p><b>Pembahasan:</b></p><ol>'+
+    '<li>Statistik perlu ditelusuri hingga sumber asli.</li>'+
+    '<li>Perbedaan angka perlu diperiksa melalui konteks, tanggal, dan metode.</li>'+
+    '<li>Tautan harus dibuka dan isinya harus benar-benar mendukung klaim.</li>'+
+    '<li>Kurangnya bukti berarti belum terverifikasi, bukan otomatis benar atau salah.</li></ol>'+
+    '<p class="small">Hasil kuis ini mengukur jawaban pada empat soal latihan, bukan keseluruhan kemampuan literasi AI.</p>';
+}
+</script>
+</body>
+</html>
