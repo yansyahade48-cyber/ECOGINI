@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Klaim 2.0 | ECOGINI</title>
+  <style>
+    :root {
+      --green: #176b45;
+      --light: #e9f6ed;
+      --ink: #183b2b;
+      --muted: #647568;
+      --line: #dce8df;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f9f5;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--line);
+      padding: 18px 20px;
+    }
+
+    nav, main {
+      width: min(760px, 92%);
+      margin: auto;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    nav a { color: var(--green); text-decoration: none; }
+
+    main { padding: 28px 0 50px; }
+
+    .tag {
+      color: var(--green);
+      font-weight: bold;
+      letter-spacing: 1px;
+      font-size: 12px;
+    }
+
+    h1 { line-height: 1.2; margin-bottom: 10px; }
+
+    .intro, .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    label { display: block; font-weight: bold; margin: 14px 0 6px; }
+
+    textarea, input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bdcfc1;
+      border-radius: 9px;
+      font: inherit;
+      background: white;
+    }
+
+    textarea { min-height: 95px; resize: vertical; }
+
+    .check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 13px 0;
+      font-weight: normal;
+    }
+
+    .check input { width: 18px; height: 18px; margin-top: 5px; }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 16px;
+      background: var(--green);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    button.secondary { background: #e8f1e9; color: var(--green); }
+
+    #result {
+      margin-top: 18px;
+      padding: 18px;
+      background: var(--light);
+      border-radius: 12px;
+      display: none;
+    }
+
+    .note { font-size: 13px; color: var(--muted); }
+    .result-title { font-size: 19px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <strong>🌱 ECOGINI</strong>
+      <a href="index.html">← Kembali ke beranda</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tag">ECO TOOLS · 01</div>
+    <h1>Cek Klaim 2.0</h1>
+    <p>Jangan langsung percaya. Periksa sumber, cari bukti, lalu tentukan kesimpulan dengan hati-hati.</p>
+
+    <section class="intro">
+      <strong>Prinsip utama</strong>
+      <p>Jawaban AI bisa terdengar meyakinkan, tetapi tetap perlu diperiksa. Checklist ini membantu proses verifikasi; alat ini tidak otomatis membuktikan sebuah klaim benar atau salah.</p>
+    </section>
+
+    <section class="panel">
+      <h2>01. Catat klaim</h2>
+      <label for="claim">Klaim atau jawaban AI yang ingin diperiksa</label>
+      <textarea id="claim" placeholder="Tempel klaim yang ingin kamu periksa..."></textarea>
+
+      <label for="source">Sumber pertama yang ditemukan</label>
+      <input id="source" placeholder="Nama situs, penulis, atau URL sumber">
+
+      <label for="date">Tanggal publikasi atau pembaruan</label>
+      <input id="date" placeholder="Contoh: 12 Oktober 2026">
+
+      <label for="evidence">Bukti yang mendukung atau membantah klaim</label>
+      <textarea id="evidence" placeholder="Tuliskan data, kutipan singkat, atau temuan yang relevan..."></textarea>
+
+      <h2>02. Periksa bukti</h2>
+      <p>Centang hanya jika kamu sudah memeriksanya.</p>
+
+      <label class="check">
+        <input type="checkbox" id="c1">
+        <span>Sumber dan identitas penerbitnya jelas serta dapat diperiksa.</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="c2">
+        <span>Tanggal dan konteks informasi sesuai dengan klaim.</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="c3">
+        <span>Ada bukti yang relevan, bukan sekadar opini atau judul.</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="c4">
+        <span>Saya membandingkan dengan sumber independen yang tepercaya.</span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="c5">
+        <span>Sumber pembanding benar-benar mendukung kesimpulan yang saya buat.</span>
+      </label>
+
+      <label for="conclusion">Kesimpulan sementara</label>
+      <select id="conclusion" style="width:100%;padding:12px;border:1px solid #bdcfc1;border-radius:9px;font:inherit">
+        <option value="belum">Belum dapat disimpulkan</option>
+        <option value="supported">Didukung oleh bukti yang diperiksa</option>
+        <option value="contradicted">Bertentangan dengan bukti yang diperiksa</option>
+        <option value="mixed">Bukti beragam atau konteks belum jelas</option>
+      </select>
+
+      <label for="reason">Alasan kesimpulan</label>
+      <textarea id="reason" placeholder="Jelaskan alasan berdasarkan bukti yang kamu periksa..."></textarea>
+
+      <button onclick="analyze()">Evaluasi pemeriksaan</button>
+      <button class="secondary" onclick="resetForm()">Mulai ulang</button>
+
+      <div id="result" aria-live="polite"></div>
+      <p class="note">Privasi: catatan ini hanya diproses di halaman pada perangkatmu dan tidak dikirim ke server. Muat ulang halaman akan menghapus catatan yang belum disalin.</p>
+    </section>
+  </main>
+
+  <script>
+    function analyze() {
+      const claim = document.getElementById("claim").value.trim();
+      const source = document.getElementById("source").value.trim();
+      const evidence = document.getElementById("evidence").value.trim();
+      const reason = document.getElementById("reason").value.trim();
+      const checks = ["c1", "c2", "c3", "c4", "c5"];
+      const checked = checks.filter(id => document.getElementById(id).checked).length;
+      const conclusion = document.getElementById("conclusion").value;
+      const result = document.getElementById("result");
+
+      let title, advice;
+
+      if (!claim || !source || !evidence) {
+        title = "Catatan belum lengkap";
+        advice = "Isi klaim, sumber, dan bukti yang ditemukan sebelum mengevaluasi pemeriksaan.";
+      } else if (checked < 4 || !reason) {
+        title = "Perlu pemeriksaan lanjutan";
+        advice = "Lengkapi checklist dan tuliskan alasan kesimpulan. Jangan menganggap klaim benar hanya karena terdengar meyakinkan.";
+      } else if (conclusion === "belum") {
+        title = "Bukti belum cukup untuk menyimpulkan";
+        advice = "Cari sumber tambahan yang kredibel dan relevan. Tidak semua klaim bisa dipastikan dari pemeriksaan awal.";
+      } else {
+        title = "Pemeriksaan sudah dicatat";
+        advice = "Kesimpulanmu adalah: " +
+          ({
+            supported: "didukung oleh bukti yang diperiksa",
+            contradicted: "bertentangan dengan bukti yang diperiksa",
+            mixed: "buktinya beragam atau konteksnya belum jelas"
+          }[conclusion]) +
+          ". Pastikan alasanmu benar-benar didukung sumber yang dapat diperiksa.";
+      }
+
+      result.style.display = "block";
+      result.innerHTML = "";
+
+      const heading = document.createElement("div");
+      heading.className = "result-title";
+      heading.textContent = title;
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = advice;
+
+      const score = document.createElement("p");
+      score.textContent = "Checklist selesai: " + checked + " dari 5 langkah.";
+
+      const warning = document.createElement("p");
+      warning.className = "note";
+      warning.textContent = "Ini evaluasi kelengkapan proses pemeriksaan, bukan verifikasi otomatis atas kebenaran klaim.";
+
+      const copy = document.createElement("button");
+      copy.textContent = "Salin catatan pemeriksaan";
+      copy.onclick = async function () {
+        const summary =
+          "ECOGINI — CATATAN PEMERIKSAAN\n" +
+          "Klaim: " + claim + "\n" +
+          "Sumber: " + source + "\n" +
+          "Tanggal: " + document.getElementById("date").value.trim() + "\n" +
+          "Bukti: " + evidence + "\n" +
+          "Checklist: " + checked + "/5\n" +
+          "Kesimpulan sementara: " + document.getElementById("conclusion").selectedOptions[0].text + "\n" +
+          "Alasan: " + reason;
+
+        try {
+          await navigator.clipboard.writeText(summary);
+          copy.textContent = "Catatan berhasil disalin";
+        } catch (error) {
+          const box = document.createElement("textarea");
+          box.value = summary;
+          result.appendChild(box);
+          box.focus();
+          box.select();
+          copy.textContent = "Salin teks yang muncul di atas secara manual";
+        }
+      };
+
+      result.append(heading, paragraph, score, warning, copy);
+      result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function resetForm() {
+      if (!confirm("Hapus semua catatan pada formulir ini?")) return;
+      document.querySelectorAll("textarea, input").forEach(el => {
+        if (el.type === "checkbox") el.checked = false;
+        else el.value = "";
+      });
+      document.getElementById("conclusion").value = "belum";
+      document.getElementById("result").style.display = "none";
+    }
+  </script>
+</body>
+</html>
