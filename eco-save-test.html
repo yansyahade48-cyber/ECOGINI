@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ECO SAVE | ECOGINI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f8ef;
+      color: #173b2d;
+    }
+    section {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px #0001;
+    }
+    button {
+      padding: 12px 16px;
+      margin: 5px 4px 5px 0;
+      border: 0;
+      border-radius: 9px;
+      background: #176b4d;
+      color: white;
+      cursor: pointer;
+    }
+    .secondary { background: #52665b; }
+    #status { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>🌱 ECO SAVE</h1>
+    <p>Halaman uji penyimpanan progres ECOGINI.</p>
+
+    <h3>Progres simulasi: Level <span id="level">1</span></h3>
+    <p id="status">Memeriksa penyimpanan...</p>
+
+    <button onclick="saveProgress()">Simpan progres</button>
+    <button onclick="advanceLevel()">Naik level</button>
+    <button class="secondary" onclick="resetProgress()">Reset uji</button>
+
+    <p><a href="eco-lab.html">← Kembali ke ECO LAB</a></p>
+  </section>
+
+  <script>
+    const SAVE_KEY = "ecogini_save_test_v1";
+    let level = 1;
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(SAVE_KEY);
+        if (saved) {
+          const data = JSON.parse(saved);
+          if (Number.isInteger(data.level) &&
+              data.level >= 1 && data.level <= 3) {
+            level = data.level;
+          }
+        }
+        render("Progres berhasil dimuat dari browser.");
+      } catch (error) {
+        render("Penyimpanan tidak dapat dibaca di browser ini.");
+      }
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify({ level }));
+        render("Progres Level " + level + " berhasil disimpan!");
+      } catch (error) {
+        render("Gagal menyimpan progres di browser ini.");
+      }
+    }
+
+    function advanceLevel() {
+      if (level < 3) level++;
+      saveProgress();
+      document.getElementById("level").textContent = level;
+    }
+
+    function resetProgress() {
+      try {
+        localStorage.removeItem(SAVE_KEY);
+        level = 1;
+        document.getElementById("level").textContent = level;
+        render("Progres uji direset.");
+      } catch (error) {
+        render("Progres tidak dapat direset.");
+      }
+    }
+
+    function render(message) {
+      document.getElementById("level").textContent = level;
+      document.getElementById("status").textContent = message;
+    }
+
+    loadProgress();
+  </script>
+</body>
+</html>
