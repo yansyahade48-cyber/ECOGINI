@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECO LAB | ECOGINI</title>
+<style>
+:root {
+  --green: #176b4d;
+  --lime: #c9f36b;
+  --cream: #f5f8ef;
+  --ink: #173b2d;
+  --muted: #63766b;
+  --line: #dce8dc;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+}
+header {
+  background: white;
+  padding: 18px 6%;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.logo { font-size: 24px; font-weight: 900; color: var(--green); }
+.logo span { color: #91c936; }
+header a { color: var(--green); font-weight: bold; text-decoration: none; }
+main { max-width: 850px; margin: 32px auto; padding: 0 18px 50px; }
+.hero {
+  background: var(--green);
+  color: white;
+  border-radius: 22px;
+  padding: 28px;
+  margin-bottom: 22px;
+}
+.hero h1 { font-size: clamp(30px, 6vw, 46px); margin: 10px 0; }
+.hero p { line-height: 1.7; }
+.eyebrow { color: var(--lime); font-weight: bold; letter-spacing: 1px; }
+.levels { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
+.level {
+  background: white; border: 2px solid var(--line); border-radius: 16px;
+  padding: 16px; text-align: left; color: var(--ink); cursor: pointer;
+}
+.level h3 { margin: 8px 0; }
+.level p { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.level.active { border-color: var(--green); background: #e7f5df; }
+.level:disabled { opacity: .55; cursor: not-allowed; }
+.card {
+  background: white; border: 1px solid var(--line); border-radius: 20px;
+  padding: 24px; margin-top: 18px;
+}
+.topline { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.progress { height: 9px; background: #e8eee5; border-radius: 20px; overflow: hidden; margin: 15px 0; }
+.bar { height: 100%; width: 0; background: #9bce45; transition: width .2s; }
+.question { font-size: 21px; line-height: 1.45; font-weight: bold; margin: 22px 0; }
+.option {
+  display: block; width: 100%; padding: 14px; margin: 10px 0;
+  background: white; border: 1px solid var(--line); border-radius: 12px;
+  text-align: left; color: var(--ink); cursor: pointer; font-size: 15px;
+}
+.option:hover { border-color: var(--green); }
+.option.selected { border: 2px solid var(--green); background: #edf8e7; }
+.option:disabled { cursor: default; }
+button.primary, button.secondary {
+  border: 0; border-radius: 12px; padding: 13px 18px;
+  font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 12px;
+}
+.primary { background: var(--lime); color: #173b2d; }
+.secondary { background: #eaf1e8; color: var(--green); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.feedback { padding: 15px; border-radius: 12px; margin-top: 16px; line-height: 1.6; }
+.good { background: #e1f6e6; border: 1px solid #a7ddb4; }
+.bad { background: #fff0d8; border: 1px solid #f0d19a; }
+.small { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.hidden { display: none; }
+.score { font-size: 42px; font-weight: 900; color: var(--green); }
+footer { text-align: center; color: var(--muted); font-size: 13px; padding: 25px; }
+@media(max-width:600px) {
+  .levels { grid-template-columns: 1fr; }
+  .hero { padding: 22px; }
+  .card { padding: 18px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">ECO<span>GINI</span> 🌱</div>
+  <a href="index.html">← Beranda</a>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">🌱 ECO LAB • LEARN BY VERIFYING</div>
+    <h1>Naik level, makin kritis!</h1>
+    <p>Latih kemampuanmu memeriksa klaim dari AI. Pilih level, jawab soal, pelajari pembahasannya, dan kumpulkan progresmu.</p>
+  </section>
+
+  <h2>Pilih level tantangan</h2>
+  <p class="small">Selesaikan minimal 4 dari 5 soal untuk membuka level berikutnya.</p>
+
+  <section class="levels">
+    <button class="level active" id="level0" onclick="startLevel(0)">
+      <div>🌱 LEVEL 1</div><h3>EASY</h3>
+      <p>Detektif Pemula<br>Dasar verifikasi informasi</p>
+      <strong id="status0">Siap dimainkan</strong>
+    </button>
+    <button class="level" id="level1" onclick="startLevel(1)" disabled>
+      <div>🔎 LEVEL 2</div><h3>MEDIUM</h3>
+      <p>Pemburu Bukti<br>Sumber dan statistik</p>
+      <strong id="status1">🔒 Terkunci</strong>
+    </button>
+    <button class="level" id="level2" onclick="startLevel(2)" disabled>
+      <div>🧠 LEVEL 3</div><h3>HARD</h3>
+      <p>Investigator AI<br>Analisis kasus kompleks</p>
+      <strong id="status2">🔒 Terkunci</strong>
+    </button>
+  </section>
+
+  <section class="card" id="quiz">
+    <div class="topline">
+      <strong id="levelTitle">EASY — Detektif Pemula</strong>
+      <strong id="counter">Soal 1 dari 5</strong>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="small" id="instruction">Pilih satu jawaban yang paling tepat.</div>
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+    <button class="primary" id="checkBtn" onclick="checkAnswer()" disabled>Periksa jawaban</button>
+    <button class="primary hidden" id="nextBtn" onclick="nextQuestion()">Soal berikutnya →</button>
+  </section>
+
+  <section class="card hidden" id="result">
+    <div class="eyebrow" style="color:#176b4d">HASIL LEVEL</div>
+    <h2 id="resultTitle">Level selesai!</h2>
+    <div class="score" id="scoreText">0/5</div>
+    <p id="resultMessage"></p>
+    <div id="resultDetails" class="small"></div>
+    <button class="primary" id="continueBtn" onclick="continueLevel()">Lanjut ke level berikutnya →</button>
+    <button class="secondary" onclick="retryLevel()">Ulangi level ini</button>
+  </section>
+
+  <p class="small">Catatan: Kuis ini merupakan latihan literasi AI. Skor menunjukkan hasil pada soal latihan ini, bukan ukuran menyeluruh kemampuan seseorang.</p>
+</main>
+
+<footer>ECOGINI 🌱 — AI bisa menjawab. Kamu harus memeriksa.</footer>
+
+<script>
+const levels = [
+  {
+    title: "EASY — Detektif Pemula",
+    questions: [
+      {
+        q: "Apakah semua jawaban yang diberikan AI pasti benar?",
+        options: ["Ya, AI selalu benar", "Tidak, jawaban AI perlu diperiksa", "Benar jika jawabannya panjang"],
+        answer: 1,
+        why: "AI dapat menghasilkan informasi yang keliru. Periksa klaim penting melalui sumber tepercaya."
+      },
+      {
+        q: "AI menyebut angka statistik tetapi tidak memberi sumber. Apa langkah terbaik?",
+        options: ["Langsung menyebarkannya", "Menganggapnya benar karena spesifik", "Mencari sumber asli statistik tersebut"],
+        answer: 2,
+        why: "Angka yang terlihat spesifik tetap membutuhkan bukti. Telusuri laporan atau survei aslinya."
+      },
+      {
+        q: "Apa arti status 'belum terverifikasi'?",
+        options: ["Bukti belum cukup untuk menyimpulkan", "Klaim pasti palsu", "Klaim pasti benar"],
+        answer: 0,
+        why: "Belum terverifikasi berarti pemeriksaan belum menghasilkan bukti yang cukup untuk menetapkan kesimpulan."
+      },
+      {
+        q: "Kamu menemukan unggahan viral tanpa tautan sumber. Apa yang sebaiknya dilakukan?",
+        options: ["Percaya karena banyak yang membagikan", "Cari sumber dan konteks sebelum percaya", "Bagikan supaya orang lain menilai"],
+        answer: 1,
+        why: "Popularitas bukan bukti kebenaran. Cari asal informasi dan periksa konteksnya."
+      },
+      {
+        q: "Mengapa tanggal sebuah sumber perlu diperiksa?",
+        options: ["Agar halaman terlihat resmi", "Karena informasi lama bisa tidak sesuai dengan kondisi terbaru", "Tanggal menentukan semua klaim benar"],
+        answer: 1,
+        why: "Tanggal membantu menilai apakah informasi masih relevan dengan pertanyaan yang sedang diperiksa."
+      }
+    ]
+  },
+  {
+    title: "MEDIUM — Pemburu Bukti",
+    questions: [
+      {
+        q: "AI menyebut 80% siswa memakai AI setiap hari. Apa bukti yang paling relevan?",
+        options: ["Komentar anonim di media sosial", "Survei yang menjelaskan sampel, waktu, dan metode", "Jawaban AI lain yang mengulang angka itu"],
+        answer: 1,
+        why: "Periksa laporan survei asli, siapa yang disurvei, kapan, dan bagaimana datanya dikumpulkan."
+      },
+      {
+        q: "Dua situs menyebut angka berbeda untuk topik yang sama. Apa langkah awal terbaik?",
+        options: ["Pilih angka yang paling besar", "Bandingkan tanggal, definisi, metode, dan sumber data", "Pilih situs dengan desain paling bagus"],
+        answer: 1,
+        why: "Perbedaan angka bisa disebabkan periode, definisi, populasi, atau metode pengumpulan data yang berbeda."
+      },
+      {
+        q: "Sebuah artikel mengutip penelitian, tetapi tautannya tidak bisa dibuka. Apa yang sebaiknya dilakukan?",
+        options: ["Cari judul penelitian atau sumber alternatif yang dapat diperiksa", "Anggap penelitian itu pasti ada", "Langsung menyatakan artikel palsu"],
+        answer: 0,
+        why: "Tautan rusak belum otomatis membuktikan klaim palsu. Coba telusuri judul dan publikasi aslinya."
+      },
+      {
+        q: "Sumber primer dalam sebuah penelitian biasanya berarti...",
+        options: ["Unggahan yang paling viral", "Sumber langsung seperti data asli atau laporan penelitian", "Ringkasan tanpa rujukan"],
+        answer: 1,
+        why: "Sumber primer menyediakan bukti langsung, misalnya dataset, dokumen asli, atau laporan penelitian."
+      },
+      {
+        q: "Sebuah artikel mendukung klaim AI, tetapi hanya membahas kelompok kecil di satu sekolah. Apa yang perlu diperhatikan?",
+        options: ["Hasilnya pasti berlaku untuk semua siswa", "Sampel dan batas generalisasi hasilnya", "Jumlah komentar pada artikel"],
+        answer: 1,
+        why: "Temuan dari kelompok terbatas tidak otomatis mewakili seluruh populasi siswa."
+      }
+    ]
+  },
+  {
+    title: "HARD — Investigator AI",
+    questions: [
+      {
+        q: "AI mengutip laporan resmi, tetapi setelah diperiksa laporan itu tidak memuat angka yang disebutkan. Apa kesimpulan paling tepat?",
+        options: ["Angka itu benar karena ada nama lembaga", "Klaim belum didukung oleh sumber yang dikutip", "Semua isi laporan resmi pasti salah"],
+        answer: 1,
+        why: "Cocokkan klaim dengan isi sumber. Nama lembaga tidak membuktikan bahwa sumber mendukung angka tersebut."
+      },
+      {
+        q: "Dua penelitian tepercaya memberi hasil berbeda tentang penggunaan AI oleh siswa. Apa analisis terbaik?",
+        options: ["Salah satu pasti berbohong", "Bandingkan tahun, sampel, pertanyaan, dan metode penelitian", "Ambil hasil yang paling sering muncul di media sosial"],
+        answer: 1,
+        why: "Hasil berbeda dapat muncul dari perbedaan desain penelitian. Periksa metode sebelum menilai kesimpulannya."
+      },
+      {
+        q: "AI memberikan kutipan tokoh terkenal tanpa referensi. Cara paling kuat untuk memeriksanya adalah...",
+        options: ["Mencari kutipan pada sumber asli atau arsip tepercaya", "Memercayai kutipan karena terdengar meyakinkan", "Menilai dari banyaknya gambar kutipan"],
+        answer: 0,
+        why: "Telusuri pidato, tulisan, rekaman, atau arsip yang dapat membuktikan bahwa kutipan tersebut benar-benar diucapkan atau ditulis."
+      },
+      {
+        q: "Sebuah grafik menunjukkan kenaikan penggunaan AI setelah sekolah menerapkan kebijakan baru. Apakah ini membuktikan kebijakan itu penyebab kenaikan?",
+        options: ["Ya, karena terjadi setelah kebijakan", "Tidak otomatis; faktor lain dan desain penelitian juga perlu diperiksa", "Ya, jika grafik menggunakan warna yang jelas"],
+        answer: 1,
+        why: "Hubungan waktu atau korelasi saja tidak membuktikan sebab-akibat. Perlu analisis yang mempertimbangkan faktor lain."
+      },
+      {
+        q: "Kamu menemukan satu sumber yang mendukung klaim dan dua sumber yang meragukannya. Apa tindakan paling bertanggung jawab?",
+        options: ["Pilih sumber yang sesuai pendapat sendiri", "Bandingkan kualitas bukti, metode, dan independensi semua sumber", "Hitung jumlah sumber saja lalu putuskan"],
+        answer: 1,
+        why: "Kualitas, relevansi, metode, dan independensi bukti lebih penting daripada sekadar menghitung jumlah sumber."
+      }
+    ]
+  }
+];
+
+let currentLevel = 0;
+let questionIndex = 0;
+let selected = null;
+let checked = false;
+let score = 0;
+let levelScores = [null, null, null];
+let unlocked = 0;
+
+function startLevel(level) {
+  if (level > unlocked) return;
+  currentLevel = level;
+  questionIndex = 0;
+  selected = null;
+  checked = false;
+  score = 0;
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuestion();
+  updateLevelButtons();
+  document.getElementById("quiz").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function renderQuestion() {
+  const item = levels[currentLevel].questions[questionIndex];
+  selected = null;
+  checked = false;
+  document.getElementById("levelTitle").textContent = levels[currentLevel].title;
+  document.getElementById("counter").textContent = `Soal ${questionIndex + 1} dari 5`;
+  document.getElementById("bar").style.width = `${questionIndex / 5 * 100}%`;
+  document.getElementById("question").textContent = item.q;
+  document.getElementById("feedback").className = "feedback hidden";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("checkBtn").classList.remove("hidden");
+  document.getElementById("checkBtn").disabled = true;
+  document.getElementById("nextBtn").classList.add("hidden");
+  const options = document.getElementById("options");
+  options.innerHTML = "";
+  item.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "option";
+    button.textContent = String.fromCharCode(65 + index) + ". " + option;
+    button.onclick = () => chooseOption(index);
+    options.appendChild(button);
+  });
+}
+
+function chooseOption(index) {
+  if (checked) return;
+  selected = index;
+  document.querySelectorAll(".option").forEach((button, i) => {
+    button.classList.toggle("selected", i === index);
+  });
+  document.getElementById("checkBtn").disabled = false;
+}
+
+function checkAnswer() {
+  if (selected === null || checked) return;
+  checked = true;
+  const item = levels[currentLevel].questions[questionIndex];
+  const correct = selected === item.answer;
+  if (correct) score++;
+  document.querySelectorAll(".option").forEach((button, i) => {
+    button.disabled = true;
+    if (i === item.answer) button.classList.add("selected");
+  });
+  const feedback = document.getElementById("feedback");
+  feedback.className = "feedback " + (correct ? "good" : "bad");
+  feedback.innerHTML = `<strong>${correct ? "✅ Jawaban tepat!" : "💡 Belum tepat."}</strong><br>${item.why}`;
+  document.getElementById("checkBtn").classList.add("hidden");
+  document.getElementById("nextBtn").classList.remove("hidden");
+  document.getElementById("nextBtn").textContent =
+    questionIndex === 4 ? "Lihat hasil level →" : "Soal berikutnya →";
+  document.getElementById("bar").style.width = `${(questionIndex + 1) / 5 * 100}%`;
+}
+
+function nextQuestion() {
+  if (!checked) return;
+  if (questionIndex < 4) {
+    questionIndex++;
+    renderQuestion();
+  } else {
+    finishLevel();
+  }
+}
+
+function finishLevel() {
+  levelScores[currentLevel] = score;
+  const passed = score >= 4;
+  if (passed && currentLevel < 2) unlocked = Math.max(unlocked, currentLevel + 1);
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("scoreText").textContent = `${score}/5`;
+  document.getElementById("resultTitle").textContent =
+    passed ? "Level berhasil diselesaikan! 🎉" : "Ayo coba lagi! 🌱";
+  document.getElementById("resultMessage").textContent =
+    passed
+      ? currentLevel === 2
+        ? "Keren! Kamu menyelesaikan semua level ECO LAB. Tetap periksa bukti sebelum percaya pada klaim."
+        : "Bagus! Kamu lulus level ini dan level berikutnya sudah terbuka."
+      : "Kamu membutuhkan minimal 4 jawaban benar untuk lulus. Pelajari pembahasan, lalu ulangi level ini.";
+  document.getElementById("resultDetails").textContent =
+    `Jawaban benar: ${score} dari 5. ${passed ? "Status: LULUS." : "Status: BELUM LULUS."}`;
+  const continueBtn = document.getElementById("continueBtn");
+  if (currentLevel === 2 || !passed) {
+    continueBtn.classList.add("hidden");
+  } else {
+    continueBtn.classList.remove("hidden");
+    continueBtn.textContent = "Lanjut ke " + (currentLevel === 0 ? "MEDIUM" : "HARD") + " →";
+  }
+  updateLevelButtons();
+  document.getElementById("result").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function continueLevel() {
+  if (currentLevel < 2 && unlocked > currentLevel) startLevel(currentLevel + 1);
+}
+
+function retryLevel() {
+  startLevel(currentLevel);
+}
+
+function updateLevelButtons() {
+  for (let i = 0; i < 3; i++) {
+    const button = document.getElementById("level" + i);
+    button.disabled = i > unlocked;
+    button.classList.toggle("active", i === currentLevel);
+    const status = document.getElementById("status" + i);
+    if (levelScores[i] !== null) {
+      status.textContent = `Skor terakhir: ${levelScores[i]}/5`;
+    } else if (i <= unlocked) {
+      status.textContent = i === 0 ? "Siap dimainkan" : "🔓 Terbuka";
+    } else {
+      status.textContent = "🔒 Terkunci";
+    }
+  }
+}
+
+renderQuestion();
+updateLevelButtons();
+</script>
+</body>
+</html>
